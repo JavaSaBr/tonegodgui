@@ -31,7 +31,7 @@ public abstract class GameTimer {
 	
 	/**
 	 * Creates a new instance of the GameTimer class
-	 * @param targetTime The duration the timer should run in seconds
+	 * @param duration The duration the timer should run in seconds
 	 */
 	public GameTimer(float duration) {
 		this(duration,false);
@@ -39,7 +39,7 @@ public abstract class GameTimer {
 	
 	/**
 	 * Creates a new instance of the GameTimer class
-	 * @param targetTime The duration the timer should run in seconds
+	 * @param duration The duration the timer should run in seconds
 	 * @param autoStart Sets the GameTimer to active if true
 	 */
 	public GameTimer(float duration, boolean autoStart) {

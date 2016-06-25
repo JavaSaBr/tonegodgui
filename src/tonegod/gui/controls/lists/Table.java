@@ -651,9 +651,9 @@ public abstract class Table extends ScrollArea implements MouseMovementListener,
         // Set header button images
         for (TableColumn tc : columns) {
             if (tc == column) {
-                tc.getButtonIcon().setColorMap((ascending) ? arrowDownImg : arrowUpImg);
+                tc.getButtonIcon().setBackgroundTexture((ascending) ? arrowDownImg : arrowUpImg);
             } else {
-                tc.getButtonIcon().setColorMap(noArrowImg);
+                tc.getButtonIcon().setBackgroundTexture(noArrowImg);
             }
         }
 
@@ -744,7 +744,7 @@ public abstract class Table extends ScrollArea implements MouseMovementListener,
      * @param column column
      */
     public void addColumn(TableColumn column) {
-        column.getButtonIcon().setColorMap(noArrowImg);
+        column.getButtonIcon().setBackgroundTexture(noArrowImg);
         columns.add(column);
         column.setIsEnabled(sortable);
         addChild(column);
@@ -1863,7 +1863,7 @@ public abstract class Table extends ScrollArea implements MouseMovementListener,
 
     private void reconfigureHeaders() {
         for (TableColumn header : columns) {
-            header.setIsVisible(headersVisible);
+            header.setVisible(headersVisible);
             header.reconfigure();
         }
     }

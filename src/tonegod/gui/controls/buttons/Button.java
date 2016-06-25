@@ -169,7 +169,7 @@ public abstract class Button extends Element implements Control, MouseButtonList
 		setTextPaddingByKey("Button","textPadding");
 		
 		if (getUseLocalTexture()) {
-		//	setColorMap(screen.getStyle("Button").getString("defaultImg"));
+		//	setBackgroundTexture(screen.getStyle("Button").getString("defaultImg"));
 			boolean tile = false;
 			try {
 				tile = screen.getStyle("Button").getBoolean("tileImages");
@@ -826,7 +826,7 @@ public abstract class Button extends Element implements Control, MouseButtonList
 		String img = style.getString("defaultImg");
 		
 		if (img != null)
-			setColorMap(img);
+			setBackgroundTexture(img);
 		if (style.getString("hoverImg") != null) {
 			setButtonHoverInfo(
 				style.getString("hoverImg"),

@@ -228,7 +228,7 @@ public class ScrollArea extends Element implements MouseWheelListener, TouchList
 		this.getVScrollBar().getScrollButtonUp().getButtonIcon().centerToParent();
 		this.getVScrollBar().getScrollButtonDown().getButtonIcon().centerToParent();
 		
-		if (getVScrollBar().getIsVisible())
+		if (getVScrollBar().isVisible())
 			this.setWidth(this.orgDimensions.x-width);
 		else
 			this.setWidth(this.orgDimensions.x);

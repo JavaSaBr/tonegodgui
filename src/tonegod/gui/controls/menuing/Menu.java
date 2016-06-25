@@ -573,7 +573,7 @@ public abstract class Menu extends ScrollArea implements AutoHide, MouseMovement
 			
 			addScrollableChild(elArrow);
 			
-			if (!getIsVisible())
+			if (!isVisible())
 				elArrow.hide();
 	}
 	
@@ -597,7 +597,7 @@ public abstract class Menu extends ScrollArea implements AutoHide, MouseMovement
 		if (mi.getIsToggled())
 			checkbox.setIsChecked(mi.getIsToggled());
 		
-		if (!getIsVisible())
+		if (!isVisible())
 			checkbox.hide();
 	}
 	

@@ -187,7 +187,7 @@ public abstract class ColorWheel extends Window {
 					screen.getStyle("ColorWheel").getString("colorWheelSelectorImg")
 				), screen.getStyle("ColorWheel").getString("colorWheelSelectorImgTC")
 			);
-			primarySelector.getDialIndicator().setColorMap(screen.getStyle("Common").getString("blankImg"));
+			primarySelector.getDialIndicator().setBackgroundTexture(screen.getStyle("Common").getString("blankImg"));
 		}
 		primarySelector.setIsMovable(false);
 		primarySelector.setIsResizable(false);

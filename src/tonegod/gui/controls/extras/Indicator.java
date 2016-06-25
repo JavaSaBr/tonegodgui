@@ -154,7 +154,7 @@ public abstract class Indicator extends Element {
 				Indicator ind = ((Indicator)this.getElementParent());
 				if (def == null) def = elIndicator.getClippingDefine(elIndicator);
 				
-				if (getIsVisible()) {
+				if (isVisible()) {
 					float clipX = 0, clipY = 0, clipW = 0, clipH = 0;
 					if (ind.getOrientation() == Indicator.Orientation.HORIZONTAL) {
 						if (reverseDirection) {
@@ -321,23 +321,23 @@ public abstract class Indicator extends Element {
 	}
 	
 	/**
-	 * Use setAlphaMap instead
+	 * Use setAlphaTexture instead
 	 * @param alphaMapPath 
 	 */
 	@Deprecated
 	public void setIndicatorAlphaMap(String alphaMapPath) {
 		this.alphaMapPath = alphaMapPath;
-		elIndicator.setAlphaMap(this.alphaMapPath);
+		elIndicator.setAlphaTexture(this.alphaMapPath);
 	}
 	
 	/**
 	 * Applies an alpha map to the indicator, allowing for curved shapes
-	 * @param alphaMapPath 
+	 * @param texturePath
 	 */
 	@Override
-	public void setAlphaMap(String alphaMapPath) {
-		this.alphaMapPath = alphaMapPath;
-		elIndicator.setAlphaMap(this.alphaMapPath);
+	public void setAlphaTexture(String texturePath) {
+		this.alphaMapPath = texturePath;
+		elIndicator.setAlphaTexture(this.alphaMapPath);
 	}
 	
 	public Element getIndicatorElement() {
@@ -385,7 +385,7 @@ public abstract class Indicator extends Element {
 	 * @param imgPath 
 	 */
 	public void setBaseImage(String imgPath) {
-		setColorMap(imgPath);
+		setBackgroundTexture(imgPath);
 	}
 	
 	/**
@@ -393,11 +393,11 @@ public abstract class Indicator extends Element {
 	 * @param imgPath
 	 */
 	public void setOverlayImage(String imgPath) {
-		elOverlay.setColorMap(imgPath);
+		elOverlay.setBackgroundTexture(imgPath);
 	}
 	
 	public void setIndicatorImage(String imgPath) {
-		elIndicator.setColorMap(imgPath);
+		elIndicator.setBackgroundTexture(imgPath);
 	}
 	
 	public void setIndicatorPadding(Vector4f padding) {

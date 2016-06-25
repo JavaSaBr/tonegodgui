@@ -7,7 +7,6 @@ package tonegod.gui.controls.lists;
 import com.jme3.input.KeyInput;
 import com.jme3.input.event.KeyInputEvent;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import java.util.ArrayList;
@@ -168,7 +167,7 @@ public abstract class ComboBox extends TextField {
 				if (validateListSize()) {
 					if (screen.getElementById(DDList.getUID()) == null)
 						screen.addElement(DDList);
-					if (!DDList.getIsVisible()) {
+					if (!DDList.isVisible()) {
 						DDList.showMenu(
 							(Menu)null,
 							getElementParent().getAbsoluteX(),
@@ -452,7 +451,7 @@ public abstract class ComboBox extends TextField {
 					handleHightlight(miIndexOf);
 				if (screen.getElementById(DDList.getUID()) == null)
 						screen.addElement(DDList);
-				if (!DDList.getIsVisible() && evt.getKeyCode() != KeyInput.KEY_LSHIFT && evt.getKeyCode() != KeyInput.KEY_RSHIFT)
+				if (!DDList.isVisible() && evt.getKeyCode() != KeyInput.KEY_LSHIFT && evt.getKeyCode() != KeyInput.KEY_RSHIFT)
 					DDList.showMenu((Menu)null, getAbsoluteX(), getAbsoluteY()-DDList.getHeight());
 			} else {
 				if (evt.getKeyCode() == KeyInput.KEY_UP) {
@@ -493,11 +492,11 @@ public abstract class ComboBox extends TextField {
 	
 	private void updateSelected() {
 		setSelectedWithCallback(hlIndex, hlCaption, hlValue);
-		if (DDList.getIsVisible()) DDList.hide();
+		if (DDList.isVisible()) DDList.hide();
 	}
 	
 	private void handleHightlight(int index) {
-		if (DDList.getIsVisible()) DDList.setHighlight(index);
+		if (DDList.isVisible()) DDList.setHighlight(index);
 	}
 	
 	/**

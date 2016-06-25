@@ -617,23 +617,24 @@ public class Screen implements ElementManager, Control, RawInputListener {
 	 * @param topMost The Element to bring to the front
 	 */
 	@Override
-	public void updateZOrder(Element topMost) {
-	//	zOrderCurrent = zOrderInit;
-		String topMostUID = topMost.getUID();
-		float shiftZ = topMost.getLocalTranslation().getZ();
+	public void updateZOrder(final Element topMost) {
+
+        final Vector3f topLocation = topMost.getLocalTranslation();
+        float shiftZ = topLocation.getZ();
 		
-		for (Element el : elements.values()) {
-			if (topMost.getIsGlobalModal()) {  }
-			else if (topMost.getIsModal()) {  }
-			else {
-				if (!el.getIsGlobalModal() && !el.getIsModal()) {
-					if (el.getLocalTranslation().getZ() > shiftZ) {
-						el.move(0,0,-zOrderStepMajor);
-					}
-				}
-			}
+		for (final Element element : elements.values()) {
+			if (topMost.getIsGlobalModal()) continue;
+			if (topMost.getIsModal()) continue;
+
+            final Vector3f elementPos = element.getLocalTranslation();
+
+            if (elementPos.getZ() > shiftZ) {
+                element.move(0, 0, shiftZ - zOrderStepMajor);
+            }
 		}
-		topMost.setLocalTranslation(topMost.getLocalTranslation().setZ(Float.valueOf(zOrderCurrent)));
+
+        topLocation.setZ(zOrderCurrent);
+		topMost.setLocalTranslation(topLocation);
 	}
 	
 	/**
@@ -1115,7 +1116,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
 			}
 		} else {
 			if (keyboardElement != null) {
-				if (keyboardElement.getParent() != null && keyboardElement.getIsVisible()) {
+				if (keyboardElement.getParent() != null && keyboardElement.isVisible()) {
 					if (evt.isPressed()) {
 						((KeyboardListener)keyboardElement).onKeyPress(evt);
 					} else if (evt.isReleased()) {
@@ -1382,7 +1383,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
 	
 	/**
 	 * Removes an Element from the Screen and scene graph
-	 * @param element The Element to remove
+	 * @param subscreen The Element to remove
 	 */
 	public void removeSubScreen(SubScreen subscreen) {
 		subscreens.remove(subscreen.getUID());
@@ -2473,7 +2474,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
 		}
 
 		setToolTipLocation();
-		if (!toolTip.getIsVisible()) {
+		if (!toolTip.isVisible()) {
 			toolTip.show();
 		}
 	}
@@ -2752,13 +2753,6 @@ public class Screen implements ElementManager, Control, RawInputListener {
 	}
 	//</editor-fold>
 	
-	//<editor-fold desc="Node Event Methods">
-	/**
-	 * Determines and returns the current mouse focus Node
-	 * @param x The current mouse X coord
-	 * @param y The current mouse Y coord
-	 * @return Element eventElement
-	 */
 	public void addScene(Node scene) {
 		scenes.add(scene);
 	}

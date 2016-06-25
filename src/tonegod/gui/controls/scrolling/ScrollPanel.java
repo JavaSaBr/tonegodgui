@@ -12,11 +12,9 @@ import com.jme3.input.event.TouchEvent;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
-import java.util.Map;
+
 import tonegod.gui.core.Element;
 import tonegod.gui.core.ElementManager;
-import tonegod.gui.core.layouts.Layout;
-import tonegod.gui.core.utils.BitmapTextUtil;
 import tonegod.gui.core.utils.UIDUtil;
 import tonegod.gui.framework.animation.Interpolation;
 import tonegod.gui.framework.core.util.GameTimer;
@@ -325,13 +323,13 @@ public class ScrollPanel extends Element {
 		if (getHeight() < scrollableArea.getHeight()) {
 			if (innerBounds.getWidth() == getWidth())
 				vResize = true;
-			if (!vScrollBar.getIsVisible())
+			if (!vScrollBar.isVisible())
 				vShow = true;
 			vDir = false;
 		} else {
 			if (innerBounds.getWidth() == getWidth()-scrollSize)
 				vResize = true;
-			if (vScrollBar.getIsVisible())
+			if (vScrollBar.isVisible())
 				vHide = true;
 			vDir = true;
 		}
@@ -339,13 +337,13 @@ public class ScrollPanel extends Element {
 			if (getWidth() < scrollableArea.getWidth()) {
 				if (innerBounds.getHeight() == getHeight())
 					hResize = true;
-				if (!hScrollBar.getIsVisible())
+				if (!hScrollBar.isVisible())
 					hShow = true;
 				hDir = false;
 			} else {
 				if (innerBounds.getHeight() == getHeight()-scrollSize)
 					hResize = true;
-				if (hScrollBar.getIsVisible())
+				if (hScrollBar.isVisible())
 					hHide = true;
 				hDir = true;
 			}
@@ -607,18 +605,18 @@ public class ScrollPanel extends Element {
 			for (Element el : scrollableArea.getElementsAsMap().values()) {
 				if (direction == ScrollDirection.Up || direction == ScrollDirection.Down) {
 					if (el.getY()+el.getHeight()+scrollableArea.getY() < 0 || el.getY()+scrollableArea.getY() > innerBounds.getHeight()) {
-						if (el.getIsVisible())
+						if (el.isVisible())
 							el.hide();
 					} else {
-						if (!el.getIsVisible())
+						if (!el.isVisible())
 							el.show();
 					}
 				} else {
 					if (el.getX()+el.getWidth()+scrollableArea.getX() < 0 || el.getX()+scrollableArea.getX() > innerBounds.getWidth()) {
-						if (el.getIsVisible())
+						if (el.isVisible())
 							el.hide();
 					} else {
-						if (!el.getIsVisible())
+						if (!el.isVisible())
 							el.show();
 					}
 				}
