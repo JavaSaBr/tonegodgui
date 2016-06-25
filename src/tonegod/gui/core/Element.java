@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import rlib.util.pools.Reusable;
 import tonegod.gui.controls.extras.DragElement;
 import tonegod.gui.controls.form.Form;
 import tonegod.gui.core.layouts.Layout;
@@ -51,7 +52,7 @@ import tonegod.gui.style.Style;
  * @see #setIsMovable(boolean)
  * @see #setIsResizable(boolean) </p>
  */
-public class Element extends Node {
+public class Element extends Node implements Reusable {
 
     public static final String PARAM_COLOR_MAP = "ColorMap";
     public static final String PARAM_COLOR = "Color";
@@ -117,11 +118,13 @@ public class Element extends Node {
 
     public Vector4f borders = new Vector4f(1, 1, 1, 1);
 
+    protected final Vector2f orgPosition;
+
     protected Vector4f borderHandles = new Vector4f(12, 12, 12, 12);
     protected Vector2f minDimensions = new Vector2f(10, 10);
     protected Vector2f position = new Vector2f();
     protected Vector2f dimensions = new Vector2f();
-    protected Vector2f orgPosition, orgDimensions, orgRelDimensions;
+    protected Vector2f orgDimensions, orgRelDimensions;
 
     protected boolean isMovable = false;
 
@@ -259,6 +262,7 @@ public class Element extends Node {
             this.UID = UID;
         }
 
+        this.orgPosition = new Vector2f();
         this.position.set(position);
         this.dimensions.set(dimensions);
         this.orgDimensions = dimensions.clone();
@@ -361,6 +365,19 @@ public class Element extends Node {
         setLocalTranslation(position.x, position.y, 0);
     }
 
+    public Vector2f getOrgPosition() {
+        return orgPosition;
+    }
+
+    public void setOrgPosition(final Vector2f orgPosition) {
+        this.orgPosition.set(orgPosition);
+    }
+
+    @Override
+    public void free() {
+        this.initialized = false;
+    }
+
     /**
      * Converts the the inputed percentage (0.0f-1.0f) into pixels of the elements image
      *
@@ -407,9 +424,13 @@ public class Element extends Node {
         }
 
         if (!child.getInitialized()) {
+
             child.setY(getHeight() - child.getHeight() - child.getY());
-            child.orgPosition = position.clone();
-            child.orgPosition.setY(child.getY());
+
+            final Vector2f orgPosition = child.getOrgPosition();
+            orgPosition.set(position);
+            orgPosition.setY(child.getY());
+
             child.setInitialized();
         }
 
@@ -616,19 +637,29 @@ public class Element extends Node {
     }
 
     public void resetChildZOrder() {
-        int pCount = getParentCount();
-        float nStep = screen.getZOrderStepMinor();
-        if (pCount > 0)
-            nStep /= pCount;
-        float step = nStep;
-        for (Element el : elementChildren.values()) {
-            el.setLocalTranslation(el.getLocalTranslation().setZ(step));
-            step += nStep;
-            if (getTextElement() != null) {
-                getTextElement().setLocalTranslation(getTextElement().getLocalTranslation().setZ(
-                        step
-                ));
-                step += nStep;
+
+        float stepSize = screen.getZOrderStepMinor();
+        float nextZOrder = stepSize;
+
+        for (final Element element : elementChildren.values()) {
+
+            final Vector3f elementLoc = element.getLocalTranslation();
+            elementLoc.setZ(nextZOrder);
+
+            element.setLocalTranslation(elementLoc);
+
+            nextZOrder += stepSize;
+
+            final BitmapText textElement = element.getTextElement();
+
+            if (textElement != null) {
+
+                final Vector3f textLoc = textElement.getLocalTranslation();
+                textLoc.setZ(nextZOrder);
+
+                textElement.setLocalTranslation(textLoc);
+
+                nextZOrder += stepSize;
             }
         }
     }
@@ -646,26 +677,31 @@ public class Element extends Node {
      *
      * @param zOrder The depth to place the Element at. (Relative to the parent's z-order)
      */
-    protected void initZOrder(float zOrder) {
-        setLocalTranslation(getLocalTranslation().setZ(zOrder));
+    protected void initZOrder(final float zOrder) {
 
-        float stepMinor = screen.getZOrderStepMinor();
+        final Vector3f currentLoc = getLocalTranslation();
+        currentLoc.setZ(zOrder);
 
-        int parentCount = getParentCount();
-        if (parentCount > 0) stepMinor /= parentCount;
+        setLocalTranslation(currentLoc);
 
-        float step = stepMinor;
+        final float stepSize = screen.getZOrderStepMinor();
+        float nextZOrder = 0F;
+
         final BitmapText textElement = getTextElement();
 
         if (textElement != null) {
-            final Vector3f vector = textElement.getLocalTranslation();
-            textElement.setLocalTranslation(vector.setZ(step));
-            step += stepMinor;
+
+            final Vector3f textLoc = textElement.getLocalTranslation();
+            textLoc.setZ(nextZOrder);
+
+            textElement.setLocalTranslation(textLoc);
+
+            nextZOrder += stepSize;
         }
 
         for (final Element children : elementChildren.values()) {
-            children.initZOrder(step);
-            step += stepMinor;
+            children.initZOrder(nextZOrder);
+            nextZOrder += stepSize;
         }
     }
 
